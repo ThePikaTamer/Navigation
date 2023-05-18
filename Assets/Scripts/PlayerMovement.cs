@@ -8,12 +8,16 @@ public class PlayerMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
 
+    private Animator animator;
+    public GameObject GOPanel;
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
+        GOPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -27,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
             if(hit)
             {
+                animator.SetBool("Walk", true);
                 agent.SetDestination(rayCastHit.point);//
                 return;
             }
@@ -46,8 +51,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.gameObject.GetComponent<EnemyChase>())
         {
+            animator.SetTrigger("Die");
             print("Arthur!!!!!");
-            SceneManager.LoadScene(0);
+            GOPanel.SetActive(true);
         }
     }
 }
