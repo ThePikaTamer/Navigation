@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -26,13 +27,27 @@ public class PlayerMovement : MonoBehaviour
 
             if(hit)
             {
-                agent.SetDestination(rayCastHit.point);
+                agent.SetDestination(rayCastHit.point);//
                 return;
             }
 
             //moverlo
-            //Transform posicion = Input.mousePosition();
+            /*NavMeshHit navMeshHit;
+            NavMesh.SamplePosition(rayCastHit.point, out navMeshHit, 1, 1 << NavMesh.GetAreaFromName("Walkable"));
 
+            if (navMeshHit.hit)
+            {
+                agent.SetDestination(navMeshHit.position);
+            }*/
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<EnemyChase>())
+        {
+            print("Arthur!!!!!");
+            SceneManager.LoadScene(0);
         }
     }
 }

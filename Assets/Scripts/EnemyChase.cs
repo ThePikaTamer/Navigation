@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Chase : MonoBehaviour
+public class EnemyChase : MonoBehaviour
 {
     public Transform[] goals;
     private NavMeshAgent agent;
