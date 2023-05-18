@@ -21,6 +21,17 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayCastHit;
+            bool hit = Physics.Raycast(ray, out rayCastHit);
+
+            if(hit)
+            {
+                agent.SetDestination(rayCastHit.point);
+                return;
+            }
+
+            //moverlo
+            //Transform posicion = Input.mousePosition();
 
         }
     }
