@@ -11,27 +11,43 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     public GameObject GOPanel;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool isAttacking;
+
+    private void Awake()
     {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         animator = GetComponent<Animator>();
+        Time.timeScale = 1f;
+        isAttacking = false;
 
         GOPanel.SetActive(false);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        MoveToPosition();
+        performSimpleAttack();
+        attackWSword();
+    }
+
+    private void MoveToPosition()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rayCastHit;
             bool hit = Physics.Raycast(ray, out rayCastHit);
 
-            if(hit)
+            if (hit)
             {
-                animator.SetBool("Walk", true);
+                //animator.SetBool("Walk", true);
                 agent.SetDestination(rayCastHit.point);//
                 return;
             }
@@ -47,13 +63,40 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void performSimpleAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger("Attack 01");
+        }
+    }
+    private void attackWSword()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack 01"))
+        {
+            print("ataca!");
+            isAttacking = true;
+        }
+        else
+        {
+            isAttacking = false;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.GetComponent<EnemyChase>())
         {
+            if(isAttacking==true)
+            {
+                print("A");
+                Destroy(collision.gameObject);
+            }
+
             animator.SetTrigger("Die");
             print("Arthur!!!!!");
             GOPanel.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
 }
